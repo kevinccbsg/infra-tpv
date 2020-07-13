@@ -11,4 +11,6 @@ rm -f terraform.tfvars-e
 
 ## Prepare credential file
 
-echo $PROJECT_CREDENTIAL | base64 -D > credential.json
+base64 --help
+
+echo $PROJECT_CREDENTIAL | base64 --decode > credential.json
