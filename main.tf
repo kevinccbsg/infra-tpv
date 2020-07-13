@@ -2,6 +2,7 @@
 
 terraform {
   backend "gcs" {
+    credentials = var.project_credential
     bucket      = "PROJECT_ID-tfstate"
   }
 }
