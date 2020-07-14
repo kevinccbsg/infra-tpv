@@ -1,0 +1,84 @@
+
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
+  PROJECT_CREDENTIAL: ${{ secrets.PROJECT_CREDENTIAL }}
+  PROJECT_REGION: ${{ secrets.PROJECT_REGION }}
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    # Checkout the repository to the GitHub Actions runner
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GKE_EMAIL }}
+        service_account_key: ${{ secrets.PROJECT_CREDENTIAL }}
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_KC_GA_TOKEN }}
+
+    # Set up config variables
+    - name: Set up tfvars
+      run: |
+        chmod +x replace_variables.sh
+        ./replace_variables.sh
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan
+
+    # Submit a comment with the plan output to the pull request
+    - name: "Run - Terraform Comment"
+      uses: actions/github-script@0.9.0
+      if: github.ref != 'refs/heads/master'
+      env:
+        STDOUT: "```${{ steps.plan.outputs.stdout }}```"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: process.env.STDOUT
+          })
+    
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -auto-approve
