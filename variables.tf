@@ -1,8 +1,4 @@
 
-variable "project_credential" {
-  type = string
-}
-
 variable "project_id" {
   type = string
 }
