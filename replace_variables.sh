@@ -1,6 +1,4 @@
 
-
-sed -i -e "s/PROJECT_CREDENTIAL/$PROJECT_CREDENTIAL/g" terraform.tfvars
 sed -i -e "s/PROJECT_ID/$PROJECT_ID/g" terraform.tfvars
 sed -i -e "s/PROJECT_ID/$PROJECT_ID/g" main.tf
 sed -i -e "s/PROJECT_REGION/$PROJECT_REGION/g" terraform.tfvars
@@ -10,7 +8,5 @@ sed -i -e "s/PROJECT_REGION/$PROJECT_REGION/g" terraform.tfvars
 rm -f terraform.tfvars-e
 
 ## Prepare credential file
-
-base64 --help
 
 echo $PROJECT_CREDENTIAL | base64 --decode > credential.json
