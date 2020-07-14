@@ -59,7 +59,7 @@ jobs:
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan
+      run: terraform plan -no-color
 
     # Submit a comment with the plan output to the pull request
     - name: "Run - Terraform Comment"
