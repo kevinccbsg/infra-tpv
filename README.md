@@ -1,3 +1,5 @@
+![Terraform](https://github.com/kevinccbsg/infra-tpv/workflows/Terraform/badge.svg)
+
 # Infra-TPV
 
 This is a repo to create TPV application infraestructure using [Terraform](https://www.terraform.io/).
@@ -42,4 +44,25 @@ Validate your configuration
 
 ```
 terraform validate
+```
+
+## You also need to create a service account
+
+This service account must have this role.
+
+```
+ROLE
+roles/cloudfunctions.admin
+roles/compute.networkAdmin
+roles/container.admin
+roles/iam.serviceAccountUser
+roles/storage.admin
+```
+
+You can add a role with this command:
+
+```
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/compute.networkAdmin
 ```
