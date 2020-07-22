@@ -22,3 +22,7 @@ module "gke" {
 module "service_account" {
   source = "./service_account"
 }
+
+module "container_registry" {
+  source = "./registry"
+}
