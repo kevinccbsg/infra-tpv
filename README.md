@@ -57,6 +57,7 @@ roles/compute.networkAdmin
 roles/container.admin
 roles/iam.serviceAccountUser
 roles/storage.admin
+roles/iam.serviceAccountAdmin
 ```
 
 You can add a role with this command:
