@@ -7,9 +7,6 @@ terraform {
   }
 }
 
-resource "google_project_service" "crm_api" {
-  service = "cloudresourcemanager.googleapis.com"
-}
 
 provider "google" {
   credentials = file("credential.json")
