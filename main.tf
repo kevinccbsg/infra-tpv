@@ -19,6 +19,6 @@ module "gke" {
   project_region = var.project_region
 }
 
-module "service_account" {
-  source = "./service_account"
-}
+# module "service_account" {
+#   source = "./service_account"
+# }
