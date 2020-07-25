@@ -93,3 +93,21 @@ gcloud projects add-iam-policy-binding <PROJECT_ID> \
   --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
   --role roles/run.admin
 ```
+
+## Kubernetes usage
+
+After terraform creates your cluster you can connect to this one using this command:
+
+```
+gcloud container clusters get-credentials tpv-gke-cluster --zone <YOUR_ZONE> --project <PROJECT_ID>
+```
+
+*recomendation*
+
+You can create two namespaces, one for development and one for production.
+
+```
+kubectl create namespace development
+kubectl create namespace production
+```
+
