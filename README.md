@@ -67,3 +67,29 @@ gcloud projects add-iam-policy-binding <PROJECT_ID> \
   --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
   --role roles/compute.networkAdmin
 ```
+
+## Container service account role binding
+
+One terraform create your Service account you can add them this roles to use it in your CI to deploy images to container registry and if you want to deploy to kubernetes. We try to use this [Terraform config](https://www.terraform.io/docs/providers/google/r/google_service_account_iam.html) but we could not do it.
+
+```
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/viewer
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/container.developer
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/iam.serviceAccountUser
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/storage.admin
+
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:<YOUR_SERVICE_ACCOUNT>" \
+  --role roles/run.admin
+```
