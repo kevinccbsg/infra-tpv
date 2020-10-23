@@ -14,15 +14,15 @@ provider "google" {
   region      = var.project_region
 }
 
-module "gke" {
-  source         = "./gke"
-  project_region = var.project_region
-}
+# module "gke" {
+#   source         = "./gke"
+#   project_region = var.project_region
+# }
 
-module "service_account" {
-  source = "./service_account"
-}
+# module "service_account" {
+#   source = "./service_account"
+# }
 
-module "container_registry" {
-  source = "./registry"
-}
+# module "container_registry" {
+#   source = "./registry"
+# }
